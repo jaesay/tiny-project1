@@ -32,6 +32,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+		<!-- default 버전(3.0.4)으로 하면 에러나서 버전 기재함 -->
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		    <version>3.0.3.RELEASE</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>

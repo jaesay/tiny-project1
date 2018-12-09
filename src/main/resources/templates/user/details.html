@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html 	xmlns:th="http://www.thymeleaf.org"
+		xmlns:sec="http://www.thymeleaf.org/extras-spring-security">
+
+<head>
+<meta charset="UTF-8">
+<title>회원 정보</title>
+</head>
+<body>
+	<h1>회원 정보 출력</h1>
+	
+	<hr />
+	
+	<h3 sec:authentication="name">Spring security username</h3>
+	<h3 th:text="${#authentication.name}">Spring security username</h3>
+    <h3>[[${#authentication.name}]]</h3>
+    
+	
+	<hr />
+    <div>[[${#authentication.principal}]]</div>
+	
+</body>
+</html>
