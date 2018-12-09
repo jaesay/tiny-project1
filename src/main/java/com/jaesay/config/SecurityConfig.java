@@ -13,11 +13,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.jaesay.domain.Role;
+import com.jaesay.support.handler.CustomAccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -47,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
         http
         	.authorizeRequests()
-        		.antMatchers("/", "/signup", "/login", "/logout").permitAll()
+        		.antMatchers("/").permitAll()
+        		.antMatchers("/member/signup", "/login").access("isAnonymous()")
         		.antMatchers("/member/**").access("hasRole('" + Role.ROLE_USER + "')")
         		.antMatchers("/admin/**").access("hasRole('" + Role.ROLE_ADMIN + "')")
         		.and()
@@ -64,8 +67,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             	.invalidateHttpSession(true)
             	.and()
             .exceptionHandling()
-            	.accessDeniedPage("/access-denied");
+            	.accessDeniedHandler(accessDeniedHandler());
         
+	}
+	
+	@Bean
+	public AccessDeniedHandler accessDeniedHandler(){
+	    return new CustomAccessDeniedHandler();
 	}
 	
 	@Bean
