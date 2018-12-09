@@ -2,10 +2,11 @@ package com.jaesay;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.PropertySource;
+
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 
 @SpringBootApplication
-@PropertySource({"classpath:/config/db-config.properties"})
+@EnableEncryptableProperties
 public class TinyProject1Application {
 
 	public static void main(String[] args) {
