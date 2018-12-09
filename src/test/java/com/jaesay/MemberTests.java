@@ -9,9 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.jaesay.domain.AppRole;
-import com.jaesay.domain.AppUser;
-import com.jaesay.repository.AppUserRepository;
+import com.jaesay.domain.Role;
+import com.jaesay.domain.Member;
+import com.jaesay.repository.MemberRepository;
 
 import lombok.extern.java.Log;
 
@@ -19,10 +19,10 @@ import lombok.extern.java.Log;
 @SpringBootTest
 @Log
 @Commit
-public class UserTests {
+public class MemberTests {
 	
 	@Autowired
-	AppUserRepository repo;
+	MemberRepository repo;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -31,30 +31,30 @@ public class UserTests {
 	public void testInsert() {
 		
 		for(int i=0; i<=10; i++) {
-			AppUser user = new AppUser();
-			user.setUserName("user" + i);
-			user.setPassword(passwordEncoder.encode("1234"));
-			user.setEmail("user" + i + "@test.com");
-			user.setEnabled(true);
-			user.setFirstName("fn" + i);
-			user.setLastName("ln" + i);
+			Member member = new Member();
+			member.setMemberName("user" + i);
+			member.setPassword(passwordEncoder.encode("1234"));
+			member.setEmail("user" + i + "@test.com");
+			member.setEnabled(true);
+			member.setFirstName("fn" + i);
+			member.setLastName("ln" + i);
 			
-			AppRole role = new AppRole();
+			Role role = new Role();
 			if(i<=5) {
 				role.setRoleName("USER");
 			} else {
 				role.setRoleName("ADMIN");
 			}
-			user.setRoles(Arrays.asList(role));
+			member.setRoles(Arrays.asList(role));
 			
-			repo.save(user);
+			repo.save(member);
 		}
 		
 	}
 	
 	@Test
 	public void testRead() {
-		Optional<AppUser> result = repo.findById("user85");
+		Optional<Member> result = repo.findById("user85");
 		result.ifPresent(user->log.info("user" + user));
 	}
 }

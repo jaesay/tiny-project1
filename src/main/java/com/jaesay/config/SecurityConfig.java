@@ -17,7 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.jaesay.domain.AppRole;
+import com.jaesay.domain.Role;
 
 @Configuration
 @EnableWebSecurity
@@ -48,12 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
         	.authorizeRequests()
         		.antMatchers("/", "/signup", "/login", "/logout").permitAll()
-        		.antMatchers("/user/**").access("hasRole('" + AppRole.ROLE_USER + "')")
-        		.antMatchers("/admin/**").access("hasRole('" + AppRole.ROLE_ADMIN + "')")
+        		.antMatchers("/member/**").access("hasRole('" + Role.ROLE_USER + "')")
+        		.antMatchers("/admin/**").access("hasRole('" + Role.ROLE_ADMIN + "')")
         		.and()
         	.formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/user/details")
+                .defaultSuccessUrl("/member/details")
                 .failureUrl("/login?error=true")
                 .usernameParameter("username")
                 .passwordParameter("password")

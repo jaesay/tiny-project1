@@ -18,13 +18,13 @@ public class CustomUserDetails extends User {
 
 	private static final String ROLE_PREFIX = "ROLE_";
 
-	private AppUser user;
+	private Member member;
 	
-	public CustomUserDetails(AppUser user) {
-		super(user.getUserName(), user.getPassword(), getAuthorities(user.getRoles()));
+	public CustomUserDetails(Member member) {
+		super(member.getMemberName(), member.getPassword(), getAuthorities(member.getRoles()));
 	}
 
-	private static List<GrantedAuthority> getAuthorities(List<AppRole> roles) {
+	private static List<GrantedAuthority> getAuthorities(List<Role> roles) {
 		
 		List<GrantedAuthority> list = new ArrayList<>();
 		

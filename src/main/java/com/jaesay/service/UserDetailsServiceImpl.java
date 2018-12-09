@@ -7,20 +7,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.jaesay.domain.CustomUserDetails;
-import com.jaesay.repository.AppUserRepository;
+import com.jaesay.repository.MemberRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	AppUserRepository repo;
+	MemberRepository memberRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		return repo.findById(username)
-				.filter(user -> user != null)
-				.map(user -> new CustomUserDetails(user)).get();
+		return memberRepository.findById(username)
+				.filter(m -> m != null)
+				.map(m -> new CustomUserDetails(m)).get();
 	}
 
 }

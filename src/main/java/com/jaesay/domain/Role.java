@@ -14,18 +14,18 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "App_Role")
+@Table(name = "roles")
 @ToString
 @EqualsAndHashCode(of="roleId")
-public class AppRole {
+public class Role {
 	public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
      
     @Id
     @GeneratedValue
-    @Column(name = "Role_Id", nullable = false)
+    @Column(name = "role_id", nullable = false)
     private Long roleId;
   
-    @Column(name = "Role_Name", length = 30, nullable = false)
+    @Column(name = "role_name", length = 30, nullable = false)
     private String roleName;
 }
