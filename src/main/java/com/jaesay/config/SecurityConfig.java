@@ -27,11 +27,11 @@ import com.jaesay.support.handler.CustomAccessDeniedHandler;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
+/*@EnableGlobalMethodSecurity(
 		  prePostEnabled = true, 
 		  securedEnabled = true,
 		  jsr250Enabled = true
-)
+)*/
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final static String REMEMBER_ME_KEY = "uniqueAndSecret";
@@ -57,6 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		
         http
+        	.cors()
+        		.and()
         	.authorizeRequests()
         		.antMatchers("/").permitAll()
         		.antMatchers("/member/signup", "/login").access("isAnonymous()")

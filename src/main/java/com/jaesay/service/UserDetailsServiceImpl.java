@@ -6,7 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.jaesay.domain.CustomUserDetails;
+import com.jaesay.Social.SocialUserDetailsImpl;
+import com.jaesay.domain.Member;
 import com.jaesay.repository.MemberRepository;
 
 @Service
@@ -17,10 +18,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Member member = memberRepository.findByMemberName(username);
 		
-		return memberRepository.findById(username)
+		if (member == null) {
+            throw new UsernameNotFoundException("회원(" + username + ")이 존재하지 않습니다.");
+        }
+		
+		return new SocialUserDetailsImpl(member);
+		//return new CustomUserDetails(member);
+		
+		/*return memberRepository.findById(username)
 				.filter(m -> m != null)
-				.map(m -> new CustomUserDetails(m)).get();
+				.map(m -> new CustomUserDetails(m)).get();*/
 	}
 
 }

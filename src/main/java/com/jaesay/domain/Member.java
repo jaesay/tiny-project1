@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -26,12 +27,16 @@ import lombok.ToString;
 @Entity
 @Table(name = "members", 
         uniqueConstraints = {
+        		@UniqueConstraint(name = "member_name_uk", columnNames = "member_name"),
                 @UniqueConstraint(name = "member_email_uk", columnNames = "email") })
 @ToString
 @EqualsAndHashCode(of="memberName")
 public class Member {
-
 	@Id
+    @GeneratedValue
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
+
     @Column(name = "member_name", length = 36, nullable = false)
     private String memberName;
   
