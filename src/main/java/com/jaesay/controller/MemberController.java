@@ -2,15 +2,20 @@ package com.jaesay.controller;
 
 import java.util.Arrays;
 
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.jaesay.domain.Member;
 import com.jaesay.domain.Role;
+import com.jaesay.form.SignupForm;
 import com.jaesay.service.MemberService;
 
 import lombok.extern.java.Log;
@@ -24,12 +29,21 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@GetMapping("signup")
-	public void signup() {
-
+	public void signup(Model model) {
+		model.addAttribute("signupForm", new SignupForm());
 	}
 	
 	@PostMapping("signup")
-	public String signupPOST(@ModelAttribute("member") Member member) {
+	public String signupPOST(@Valid SignupForm signupForm , BindingResult result) {
+		
+		log.info("SIGNUPFORM: " + signupForm);
+		
+		if(result.hasErrors()) {
+			return "/member/signup";
+		}
+		
+		ModelMapper modelMapper = new ModelMapper();
+		Member member = modelMapper.map(signupForm, Member.class);
 		
 		Role role = new Role();
 		role.setRoleName("USER");
@@ -38,7 +52,7 @@ public class MemberController {
 		log.info("MEMBER: " + member);
 		
 		memberService.save(member);
-		return "redirect:/member/welcome";
+		return "redirect:/welcome";
 	}
 	
 	@GetMapping("/welcome")

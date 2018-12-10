@@ -11,4 +11,9 @@ public class MainController {
 		
 		return "index";
 	}
+	
+	@GetMapping("/welcome")
+	public void welcome() {
+		
+	}
 }

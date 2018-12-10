@@ -2,6 +2,8 @@ package com.jaesay.config;
 
 import java.util.Arrays;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,6 +34,11 @@ import com.jaesay.support.handler.CustomAccessDeniedHandler;
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private final static String REMEMBER_ME_KEY = "uniqueAndSecret";
+	
+	@Autowired
+	private DataSource dataSource;
+	
 	@Autowired
     private UserDetailsService userDetailsService;
 	
@@ -64,10 +73,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
             	.logoutUrl("/logout")
             	.logoutSuccessUrl("/")
+            	.deleteCookies("JSESSIONID")
             	.invalidateHttpSession(true)
             	.and()
             .exceptionHandling()
-            	.accessDeniedHandler(accessDeniedHandler());
+            	.accessDeniedHandler(accessDeniedHandler())
+            	.and()
+            .rememberMe()
+            	.key(REMEMBER_ME_KEY)
+            	.tokenRepository(persistentTokenRepository())
+            	.tokenValiditySeconds(60*60*24);
         
 	}
 	
@@ -79,6 +94,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public PersistentTokenRepository persistentTokenRepository() {
+		JdbcTokenRepositoryImpl jdbcTokenRepositoryImpl = new JdbcTokenRepositoryImpl();
+		jdbcTokenRepositoryImpl.setDataSource(dataSource);
+		return jdbcTokenRepositoryImpl;
 	}
 	
 	@Bean

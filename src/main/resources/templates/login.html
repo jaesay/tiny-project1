@@ -18,6 +18,9 @@
                 <td><input type="password" id="password" name="password" /></td>
             </tr>
             <tr>
+				<td><label for="text">Remember-Me</label><input type="checkbox" id="remember-me" name="remember-me" /></td>
+			</tr>
+            <tr>
                 <td><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />&nbsp;</td>
                 <td><button type="submit">로그인</button></td>
             </tr>
