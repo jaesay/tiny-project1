@@ -1,4 +1,4 @@
-﻿#  Spring Boot을 사용한 OAuth2 Google Login
+﻿#  Spring Boot를 사용하여 OAuth2 Google Login 구현
 
 
 
